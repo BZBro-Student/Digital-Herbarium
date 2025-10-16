@@ -43,7 +43,9 @@ class HerbariumGui extends JPanel {
     private ActionListener buttonListener;
     private StringBuilder saveData;
     private BufferedWriter fileWriter;
-
+    /**
+     * constructor for HerbariumGui
+     */
     HerbariumGui() {
         buttonListener = new ActionListener() {
             @Override
