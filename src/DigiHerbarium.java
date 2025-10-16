@@ -4,7 +4,7 @@ class DigiHerbarium {
     public static void main(String[] args){
     
         JFrame herbFrame = new JFrame("DigiHerbarium");
-        herbFrame.setSize(400, 300);
+        herbFrame.setSize(800, 800);
         herbFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         herbFrame.setVisible(true);
 

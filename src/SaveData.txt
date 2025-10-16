@@ -1,6 +1,0 @@
-###############
-Scientific Name
-Common Name
-Notes
-filepath.img
-###############

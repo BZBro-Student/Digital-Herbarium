@@ -1,4 +1,11 @@
+
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -12,83 +19,127 @@ import javax.swing.JTextField;
 
 class HerbariumGui extends JPanel {
     private JPanel mainPanel;
-    private JPanel rightPanel;
+    private JPanel infoPanel;
     private JPanel leftImagePanel;
-    private JPanel leftButtonPanel;
-    private JPanel subPanelOne;
-    private JPanel subPanelTwo;
-    private JPanel subPanelThree;
+    private JPanel controlPanel;
+    private JPanel commonNamePanel;
+    private JPanel scientificNamePanel;
+    private JPanel observationPanel;
+    private JPanel fileNamePanel;
     private JLabel commonName;
     private JTextField commonNameField;
     private JLabel scientificName;
     private JTextField scientificNameField;
+    private JLabel fileName;
+    private JTextField fileNameField;
     private JLabel observations;
     private JTextArea observationsField;
     private JScrollPane observationFieldPane;
     private ImageIcon flowerImage;
-    private JFileChooser pickFile;
+    private JFileChooser filePicker;
+    private JLabel flowerImageLabel;
     private JButton save;
-    private JButton edit;
+    private JButton pickFile;
+    private ActionListener buttonListener;
+    private StringBuilder saveData;
+    private BufferedWriter fileWriter;
 
     HerbariumGui() {
+        buttonListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == save) {
+                    saveData = new StringBuilder("###############\n");
+                    saveData.append(scientificNameField.getText());
+                    saveData.append("\n");
+                    saveData.append(commonNameField.getText());
+                    saveData.append("\n");
+                    saveData.append(observationsField.getText());
+                    saveData.append("\n");
+                    saveData.append(flowerImage.getDescription());
+                    saveData.append("\n");
+                    try {
+                        fileWriter = new BufferedWriter(new FileWriter(fileNameField.getText() + ".txt"));
+                        fileWriter.write(saveData.toString());
+                        fileWriter.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+
+                } else if (e.getSource() == pickFile) {
+                    filePicker = new JFileChooser();
+                    int returnVal = filePicker.showOpenDialog(null);
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        flowerImage = new ImageIcon(filePicker.getSelectedFile().getAbsolutePath());
+                        flowerImageLabel.setIcon(flowerImage);
+                    } else if (returnVal == JFileChooser.CANCEL_OPTION) {
+                        flowerImage = new ImageIcon("src/img/failedtoload.png");
+                        flowerImageLabel.setIcon(flowerImage);
+
+                    }
+                }
+
+            }
+        };
         // Panel that will hold all other sub-panels
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-        // Panel that will be on the left side of the mainPanel
-        rightPanel = new JPanel();
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-        subPanelOne = new JPanel();
-        subPanelTwo = new JPanel();
-        subPanelThree =  new JPanel();
-        commonName = new JLabel("Common Name:");
-        commonNameField = new JTextField(20);
-        scientificName = new JLabel("Scientific Name:");
-        scientificNameField = new JTextField(20);
-        observations = new JLabel("Observations:");
-        observationsField = new JTextArea();
-        observationFieldPane = new JScrollPane();
-        observationFieldPane.setViewportView(observationsField);
-        // Adds to right Panel
-        subPanelOne.add(commonName);
-        subPanelOne.add(commonNameField);
-        subPanelTwo.add(scientificName);
-        subPanelTwo.add(scientificNameField);
-        subPanelThree.add(observations);
-        subPanelThree.add(observationFieldPane);
-        subPanelThree.setLayout(new BoxLayout(subPanelThree, BoxLayout.Y_AXIS));
-        rightPanel.add(subPanelOne);
-        rightPanel.add(subPanelTwo);
-        rightPanel.add(subPanelThree);
-
-        // Panel that will contain plant image
+        // SubPanels
+        infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        commonNamePanel = new JPanel(new GridLayout(1, 2));
+        scientificNamePanel = new JPanel(new GridLayout(1, 2));
+        observationPanel = new JPanel(new GridLayout(1, 2));
+        fileNamePanel = new JPanel(new GridLayout(1, 2));
+        controlPanel = new JPanel();
         leftImagePanel = new JPanel();
         leftImagePanel.setLayout(new BoxLayout(leftImagePanel, BoxLayout.Y_AXIS));
-        pickFile = new JFileChooser();
-        int result = pickFile.showOpenDialog(null);
-        // Pick image
-        if (result == JFileChooser.APPROVE_OPTION) {
-            flowerImage = new ImageIcon(pickFile.getSelectedFile().getAbsolutePath());
-        } else {
-            flowerImage = new ImageIcon("src/img/failedtoload.png");
-        }
-        // Add image to panel centered
-        leftImagePanel.add(new JLabel(flowerImage));
-
-        // Panel that will contain save and edit buttons
-        leftButtonPanel = new JPanel();
+        // Images
+        flowerImage = new ImageIcon("src/img/failedtoload.png");
+        flowerImageLabel = new JLabel(flowerImage);
+        // Buttons
+        pickFile = new JButton("Change Image");
         save = new JButton("Save");
-        edit = new JButton("Edit");
-
+        // Labels
+        commonName = new JLabel("Common Name:");
+        scientificName = new JLabel("Scientific Name:");
+        observations = new JLabel("Observations:");
+        fileName = new JLabel("Save File Name");
+        // TextInput
+        commonNameField = new JTextField(20);
+        scientificNameField = new JTextField(20);
+        fileNameField = new JTextField(20);
+        observationsField = new JTextArea(5, 20);
+        observationsField.setLineWrap(true);
+        observationsField.setWrapStyleWord(true);
+        observationFieldPane = new JScrollPane();
+        observationFieldPane.setViewportView(observationsField);
+        // Adds sub panels of infoPanel
+        commonNamePanel.add(commonName);
+        commonNamePanel.add(commonNameField);
+        scientificNamePanel.add(scientificName);
+        scientificNamePanel.add(scientificNameField);
+        observationPanel.add(observations);
+        observationPanel.add(observationFieldPane);
+        fileNamePanel.add(fileName);
+        fileNamePanel.add(fileNameField);
+        // Adds sub panels to infoPanel
+        infoPanel.add(commonNamePanel);
+        infoPanel.add(scientificNamePanel);
+        infoPanel.add(observationPanel);
+        infoPanel.add(fileNamePanel);
         // Add buttons to panel
-        leftButtonPanel.add(save);
-        leftButtonPanel.add(edit);
-
+        controlPanel.add(save);
+        controlPanel.add(pickFile);
+        save.addActionListener(buttonListener);
+        pickFile.addActionListener(buttonListener);
         // Puts left button panel in correct place
-        leftImagePanel.add(leftButtonPanel);
+        leftImagePanel.add(flowerImageLabel);
+        leftImagePanel.add(controlPanel);
         // Puts left image panel in the right place
         mainPanel.add(leftImagePanel);
         // Puts right panel in the right place
-        mainPanel.add(rightPanel);
+        mainPanel.add(infoPanel);
         // puts panel into HerbariumGui
         this.add(mainPanel);
     }
