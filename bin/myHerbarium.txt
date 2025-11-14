@@ -1,0 +1,8 @@
+####
+scientificName: Quercus rubra;
+collectorName: A. Smith;
+dateCollected: 2023-10-28;
+location: "New York, Central Park, Grid 4A";
+collectionNumber: 1001;
+additionalNotes: "Large specimen, healthy leaves.";
+fileString: no path;

@@ -8,9 +8,12 @@ class DigiHerbarium {
         herbFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         herbFrame.setVisible(true);
 
-        HerbariumGui newGUI = new HerbariumGui();
+        HerbariumGui herbGUI = new HerbariumGui();
 
-        herbFrame.add(newGUI);
+        herbFrame.add(herbGUI);
+
         herbFrame.pack();
+        herbFrame.repaint();
+
     }
 }
