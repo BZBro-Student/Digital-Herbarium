@@ -32,10 +32,14 @@ class HerbariumGui extends JPanel {
     private JTextField collectionNumberField;
     private JLabel additionalNotes;
     private JTextArea additionalNotesField;
+    private JLabel fileStringLabel;
+    private JTextField fileStringField;
     private String fileString;
     // Controls
     private JPanel controlPanel;
     private JButton next;
+    private JButton previous;
+    private JButton add;
     // Image Panel
     private JPanel imagePanel;
     private ImageIcon imageIcon;
@@ -88,6 +92,8 @@ class HerbariumGui extends JPanel {
         collectionNumberField = new JTextField(10);
         additionalNotes = new JLabel("Additional Notes:");
         additionalNotesField = new JTextArea(5, 10);
+        fileStringLabel = new JLabel("File:");
+        fileStringField = new JTextField(10);        
         // default image
         imageIcon = new ImageIcon("src//img//is-this-a-butterfly.jpg");
         imageIconLabel = new JLabel(imageIcon);
@@ -106,6 +112,8 @@ class HerbariumGui extends JPanel {
         infoPanel.add(collectionNumberField);
         infoPanel.add(additionalNotes);
         infoPanel.add(additionalNotesField);
+        infoPanel.add(fileStringLabel);
+        infoPanel.add(fileStringField);
         // Create Next Button
         next = new JButton("Next");
         controlPanel = new JPanel();
@@ -113,18 +121,18 @@ class HerbariumGui extends JPanel {
         listIterator = entryList.listIterator();
         // Starts Next Button Functionality
         next.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (listIterator.hasNext()) {
-                currEntry = listIterator.next();
-                } else {
+            public void actionPerformed(ActionEvent n) {
+                if (!listIterator.hasNext()) {
                     listIterator = entryList.listIterator();
                 }
+                currEntry = listIterator.next();
                 scientificNameField.setText(currEntry.getScientificName());
                 collectorNameField.setText(currEntry.getCollectorName());
                 dateCollectedField.setText(currEntry.getDateCollected());
                 locationField.setText(currEntry.getLocation());
                 collectionNumberField.setText(currEntry.getCollectionNumber());
                 additionalNotesField.setText(currEntry.getAdditionalNotes());
+                fileStringField.setText(currEntry.getFileString());
                 fileString = currEntry.getFileString();
                 File file = new File(fileString);
                 if (file.exists()) {
@@ -133,6 +141,47 @@ class HerbariumGui extends JPanel {
                 }
             }
         });
+
+        previous = new JButton("previous");
+        controlPanel.add(previous);
+        previous.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent p) {
+                if (!listIterator.hasPrevious()) {
+                    listIterator = entryList.listIterator(entryList.size());
+                } 
+                currEntry = listIterator.previous();
+                scientificNameField.setText(currEntry.getScientificName());
+                collectorNameField.setText(currEntry.getCollectorName());
+                dateCollectedField.setText(currEntry.getDateCollected());
+                locationField.setText(currEntry.getLocation());
+                collectionNumberField.setText(currEntry.getCollectionNumber());
+                additionalNotesField.setText(currEntry.getAdditionalNotes());
+                fileStringField.setText(currEntry.getFileString());
+                fileString = currEntry.getFileString();
+                File file = new File(fileString);
+                if (file.exists()) {
+                    imageIcon = new ImageIcon(fileString);
+                    imageIconLabel.setIcon(imageIcon);
+                }
+            }
+        });
+
+        add = new JButton("Add");
+        controlPanel.add(add);
+        add.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent a) {
+                HerbEntry newEntry = new HerbEntry();
+                newEntry.setScientificName(scientificNameField.getText());
+                newEntry.setCollectorName(collectorNameField.getText());
+                newEntry.setDateCollected(dateCollectedField.getText());
+                newEntry.setLocation(locationField.getText());
+                newEntry.setCollectionNumber(collectionNumberField.getText());
+                newEntry.setAdditionalNotes(additionalNotesField.getText());
+                newEntry.setFileString(fileStringField.getText());
+                listIterator.add(newEntry);
+            }
+        });
+
 
         // Add to the main panel
         this.add(imagePanel);
