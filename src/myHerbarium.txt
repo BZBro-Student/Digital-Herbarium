@@ -1,80 +1,25 @@
 ####
-scientificName: Acer rubrum;
-collectorName: B. Evans;
-dateCollected: 2023-10-15;
-location: "Virginia, Shenandoah National Park, Whiteoak Canyon";
-collectionNumber: 2045;
-additionalNotes: "Vibrant red fall coloration, sterile specimen.";
-src\img\failedtoload.png
-
+Bellis perennis
+BB
+11/29/2025
+somewhere
+#1
+perennials
+src\img\daisy-2135313_960_720.jpg
 ####
-scientificName: Sequoia sempervirens;
-collectorName: S. Ali;
-dateCollected: 2024-02-10;
-location: "California, Muir Woods National Monument, Main Trail";
-collectionNumber: SA-099;
-additionalNotes: "Bark sample and small twig only, strictly permitted collection.";
-fileString: no path;
-
+Helianthus annuus
+BB
+11/29/2025
+somewhere
+#2
+annual
+src\img\R.jpg
 ####
-scientificName: Opuntia ficus-indica;
-collectorName: J. Martinez;
-dateCollected: 2023-06-22;
-location: "Arizona, Sonoran Desert, near Tucson";
-collectionNumber: 550;
-additionalNotes: "Yellow flowers present, heavy spines.";
-fileString: src//img//is-this-a-butterfly.jpg
+Papaver somniferum
+BB
+11/29/2025
+somewhere
+#3
+annual
+src\img\poppy-902841_960_720.jpg
 
-####
-scientificName: Magnolia grandiflora;
-collectorName: L. Southern;
-dateCollected: 2023-05-30;
-location: "South Carolina, Charleston, Historic District garden";
-collectionNumber: CHS-01;
-additionalNotes: "Large white bloom, fragrant, waxy leaves.";
-fileString: no path;
-
-####
-scientificName: Dryopteris erythrosora;
-collectorName: T. Green;
-dateCollected: 2023-09-05;
-location: "Washington, Seattle, Washington Park Arboretum";
-collectionNumber: 12;
-additionalNotes: "Autumn fern, bronze color on new fronds.";
-fileString: no path;
-
-####
-scientificName: Vaccinium corymbosum;
-collectorName: P. Berry;
-dateCollected: 2023-07-15;
-location: "New Jersey, Pine Barrens, Wharton State Forest";
-collectionNumber: 88-A;
-additionalNotes: "Highbush blueberry, fruiting stage.";
-fileString: no path;
-
-####
-scientificName: Ginkgo biloba;
-collectorName: K. Sato;
-dateCollected: 2023-11-10;
-location: "New York, Brooklyn Botanic Garden";
-collectionNumber: 3004;
-additionalNotes: "Leaves fan-shaped, turning bright yellow.";
-fileString: no path;
-
-####
-scientificName: Lavandula angustifolia;
-collectorName: F. Provence;
-dateCollected: 2024-06-01;
-location: "Oregon, Hood River Valley, Lavender Farm";
-collectionNumber: 101;
-additionalNotes: "Cultivated specimen, early bloom.";
-fileString: no path;
-
-####
-scientificName: Salix babylonica;
-collectorName: R. Rivers;
-dateCollected: 2023-04-12;
-location: "Louisiana, New Orleans, City Park lagoon bank";
-collectionNumber: 772;
-additionalNotes: "Weeping willow, long catkins present.";
-fileString: no path;

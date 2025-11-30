@@ -1,17 +1,26 @@
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ListIterator;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 class HerbariumGui extends JPanel {
     private File file;
@@ -32,6 +41,7 @@ class HerbariumGui extends JPanel {
     private JTextField collectionNumberField;
     private JLabel additionalNotes;
     private JTextArea additionalNotesField;
+    private JScrollPane additionalNotesPane;
     private JLabel fileStringLabel;
     private JTextField fileStringField;
     private String fileString;
@@ -40,6 +50,7 @@ class HerbariumGui extends JPanel {
     private JButton next;
     private JButton previous;
     private JButton add;
+    private JButton save;
     // Image Panel
     private JPanel imagePanel;
     private ImageIcon imageIcon;
@@ -79,6 +90,7 @@ class HerbariumGui extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         infoPanel = new JPanel();
+        infoPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         scientificName = new JLabel("Scientific Name:");
         scientificNameField = new JTextField(10);
@@ -92,12 +104,14 @@ class HerbariumGui extends JPanel {
         collectionNumberField = new JTextField(10);
         additionalNotes = new JLabel("Additional Notes:");
         additionalNotesField = new JTextArea(5, 10);
+        additionalNotesPane = new JScrollPane(additionalNotesField);
         fileStringLabel = new JLabel("File:");
-        fileStringField = new JTextField(10);        
+        fileStringField = new JTextField(10);
         // default image
         imageIcon = new ImageIcon("src//img//is-this-a-butterfly.jpg");
         imageIconLabel = new JLabel(imageIcon);
         imagePanel = new JPanel();
+        imageIconLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         imagePanel.add(imageIconLabel);
         // Info Panel
         infoPanel.add(scientificName);
@@ -111,12 +125,15 @@ class HerbariumGui extends JPanel {
         infoPanel.add(collectionNumber);
         infoPanel.add(collectionNumberField);
         infoPanel.add(additionalNotes);
-        infoPanel.add(additionalNotesField);
+        infoPanel.add(additionalNotesPane);
         infoPanel.add(fileStringLabel);
         infoPanel.add(fileStringField);
         // Create Next Button
         next = new JButton("Next");
+        
+        next.setContentAreaFilled(false);
         controlPanel = new JPanel();
+        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
         controlPanel.add(next);
         listIterator = entryList.listIterator();
         // Starts Next Button Functionality
@@ -141,14 +158,16 @@ class HerbariumGui extends JPanel {
                 }
             }
         });
-
+        controlPanel.add(Box.createVerticalStrut(10));
         previous = new JButton("previous");
+        
+        previous.setContentAreaFilled(false);
         controlPanel.add(previous);
         previous.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent p) {
                 if (!listIterator.hasPrevious()) {
                     listIterator = entryList.listIterator(entryList.size());
-                } 
+                }
                 currEntry = listIterator.previous();
                 scientificNameField.setText(currEntry.getScientificName());
                 collectorNameField.setText(currEntry.getCollectorName());
@@ -165,8 +184,10 @@ class HerbariumGui extends JPanel {
                 }
             }
         });
-
+        controlPanel.add(Box.createVerticalStrut(10));
         add = new JButton("Add");
+        
+        add.setContentAreaFilled(false);
         controlPanel.add(add);
         add.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent a) {
@@ -181,7 +202,44 @@ class HerbariumGui extends JPanel {
                 listIterator.add(newEntry);
             }
         });
+        
+        controlPanel.add(Box.createVerticalStrut(10));
+        save = new JButton("Save");
+    
+        save.setContentAreaFilled(false);
+        controlPanel.add(save);
+        save.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent s) {
+                StringBuilder contentToWrite = new StringBuilder();
+                for (HerbEntry listEntry : entryList) {
+                    contentToWrite.append("####\n");
+                    contentToWrite.append(listEntry.getScientificName());
+                    contentToWrite.append("\n");
+                    contentToWrite.append(listEntry.getCollectorName());
+                    contentToWrite.append("\n");
+                    contentToWrite.append(listEntry.getDateCollected());
+                    contentToWrite.append("\n");
+                    contentToWrite.append(listEntry.getLocation());
+                    contentToWrite.append("\n");
+                    contentToWrite.append(listEntry.getCollectionNumber());
+                    contentToWrite.append("\n");
+                    contentToWrite.append(listEntry.getAdditionalNotes());
+                    contentToWrite.append("\n");
+                    contentToWrite.append(listEntry.getFileString());
+                    contentToWrite.append("\n");
 
+                }
+                try {
+                    FileWriter fileOverwrite = new FileWriter(file, false);
+                    fileOverwrite.write(contentToWrite.toString());
+                    fileOverwrite.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        controlPanel.add(Box.createVerticalStrut(255));
 
         // Add to the main panel
         this.add(imagePanel);
