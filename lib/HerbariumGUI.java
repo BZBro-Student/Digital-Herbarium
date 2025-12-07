@@ -54,6 +54,7 @@ class HerbariumGui extends JPanel {
     // Image Panel
     private JPanel imagePanel;
     private ImageIcon imageIcon;
+    private Image resizedImage;
     private JLabel imageIconLabel;
 
     /**
@@ -63,22 +64,21 @@ class HerbariumGui extends JPanel {
         // Load initial list
         entryList = new IUDoubleLinkedList<HerbEntry>();
         try {
-            String filePath = "src//myHerbarium.txt";
+            String filePath = "src//myHerbarium.csv";
             file = new File(filePath);
             BufferedReader herbReader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = herbReader.readLine()) != null) {
-                if (line.equals("####")) {
-                    HerbEntry newEntry = new HerbEntry();
-                    newEntry.setScientificName(herbReader.readLine());
-                    newEntry.setCollectorName(herbReader.readLine());
-                    newEntry.setDateCollected(herbReader.readLine());
-                    newEntry.setLocation(herbReader.readLine());
-                    newEntry.setCollectionNumber(herbReader.readLine());
-                    newEntry.setAdditionalNotes(herbReader.readLine());
-                    newEntry.setFileString(herbReader.readLine());
-                    entryList.add(newEntry);
-                }
+                String[] splitLine = line.split(",");
+                currEntry = new HerbEntry(); 
+                currEntry.setScientificName(splitLine[0]);
+                currEntry.setCollectorName(splitLine[1]);
+                currEntry.setDateCollected(splitLine[2]);
+                currEntry.setLocation(splitLine[3]);
+                currEntry.setCollectionNumber(splitLine[4]);
+                currEntry.setAdditionalNotes(splitLine[5]);
+                currEntry.setFileString(splitLine[6]);
+                entryList.add(currEntry);
             }
             System.out.println(entryList.toString());
             herbReader.close();
@@ -109,7 +109,9 @@ class HerbariumGui extends JPanel {
         fileStringField = new JTextField(10);
         // default image
         imageIcon = new ImageIcon("src//img//is-this-a-butterfly.jpg");
-        imageIconLabel = new JLabel(imageIcon);
+        resizedImage = imageIcon.getImage();
+        resizedImage = resizedImage.getScaledInstance(300, 200, Image.SCALE_SMOOTH);
+        imageIconLabel = new JLabel(new ImageIcon(resizedImage));
         imagePanel = new JPanel();
         imageIconLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         imagePanel.add(imageIconLabel);
@@ -154,6 +156,9 @@ class HerbariumGui extends JPanel {
                 File file = new File(fileString);
                 if (file.exists()) {
                     imageIcon = new ImageIcon(fileString);
+                    resizedImage = imageIcon.getImage();
+                    resizedImage = resizedImage.getScaledInstance(300, 200, Image.SCALE_SMOOTH);
+                    imageIcon = new ImageIcon(resizedImage);
                     imageIconLabel.setIcon(imageIcon);
                 }
             }
@@ -180,6 +185,9 @@ class HerbariumGui extends JPanel {
                 File file = new File(fileString);
                 if (file.exists()) {
                     imageIcon = new ImageIcon(fileString);
+                    resizedImage = imageIcon.getImage();
+                    resizedImage = resizedImage.getScaledInstance(300, 200, Image.SCALE_SMOOTH);
+                    imageIcon = new ImageIcon(resizedImage);
                     imageIconLabel.setIcon(imageIcon);
                 }
             }
@@ -212,22 +220,20 @@ class HerbariumGui extends JPanel {
             public void actionPerformed(ActionEvent s) {
                 StringBuilder contentToWrite = new StringBuilder();
                 for (HerbEntry listEntry : entryList) {
-                    contentToWrite.append("####\n");
                     contentToWrite.append(listEntry.getScientificName());
-                    contentToWrite.append("\n");
+                    contentToWrite.append(',');
                     contentToWrite.append(listEntry.getCollectorName());
-                    contentToWrite.append("\n");
+                    contentToWrite.append(',');
                     contentToWrite.append(listEntry.getDateCollected());
-                    contentToWrite.append("\n");
+                    contentToWrite.append(',');
                     contentToWrite.append(listEntry.getLocation());
-                    contentToWrite.append("\n");
+                    contentToWrite.append(',');
                     contentToWrite.append(listEntry.getCollectionNumber());
-                    contentToWrite.append("\n");
+                    contentToWrite.append(',');
                     contentToWrite.append(listEntry.getAdditionalNotes());
-                    contentToWrite.append("\n");
+                    contentToWrite.append(',');
                     contentToWrite.append(listEntry.getFileString());
                     contentToWrite.append("\n");
-
                 }
                 try {
                     FileWriter fileOverwrite = new FileWriter(file, false);
